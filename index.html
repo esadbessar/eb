@@ -81,7 +81,7 @@
   </div>
 
   <div class="video-container">
-    <video src="videoo.mp4" autoplay loop playsinline></video>
+    <video src="videoo.mp4" loop playsinline></video>
   </div>
 
   <script>
@@ -97,5 +97,25 @@
       }
     }
   </script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const video = document.querySelector("video");
+
+    // Sessiz başlamasın (sesli olsun)
+    video.muted = false;
+
+    // Kullanıcı dokununca otomatik başlat
+    function tryPlay() {
+      video.play().catch(() => {
+        // Otomatik çalışmazsa kullanıcıdan etkileşim bekle
+        document.body.addEventListener("click", () => {
+          video.play();
+        }, { once: true });
+      });
+    }
+
+    tryPlay();
+  });
+</script>
 </body>
 </html>

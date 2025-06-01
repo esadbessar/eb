@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login Sayfası</title>
+  <title>موقع خطير</title>
   <style>
     body {
       margin: 0;
@@ -73,15 +73,15 @@
 </head>
 <body>
   <div class="login-container">
-    <h2>Giriş Yap</h2>
-    <input type="text" id="username" placeholder="Kullanıcı Adı">
-    <input type="password" id="password" placeholder="Şifre">
-    <button onclick="login()">Giriş</button>
+    <h2>تسجيل الدخول</h2>
+    <input type="text" id="username" placeholder="اسم المستخدم">
+    <input type="password" id="password" placeholder="كلمة المرور">
+    <button onclick="login()">مدخل</button>
     <div class="error" id="errorMsg"></div>
   </div>
 
   <div class="video-container">
-    <video src="video.MP4" autoplay loop playsinline></video>
+    <video src="videoo.mp4" autoplay loop playsinline></video>
   </div>
 
   <script>
@@ -93,7 +93,7 @@
       if (username === 'arduino' && password === '31') {
         window.location.href = 'esad.html';
       } else {
-        errorMsg.textContent = "Kullanıcı adı veya şifre hatalı!";
+        errorMsg.textContent = "اسم المستخدم وكلمة المرور غير صحيحين!";
       }
     }
   </script>

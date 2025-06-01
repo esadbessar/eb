@@ -58,16 +58,16 @@
     }
 
     .video-container {
-      text-align: center;
-      margin: 20px auto;
-      width: 90%;
-      max-width: 500px;
+      margin-top: 20px;
+      border-radius: 10px;
+      overflow: hidden;
     }
 
     .video-container video {
       width: 100%;
       height: auto;
       border-radius: 10px;
+      display: block;
     }
   </style>
 </head>
@@ -78,10 +78,11 @@
     <input type="password" id="password" placeholder="كلمة المرور">
     <button onclick="login()">مدخل</button>
     <div class="error" id="errorMsg"></div>
-  </div>
 
-  <div class="video-container">
-    <video src="videoo.mp4" loop playsinline></video>
+    <!-- Video tam altına yerleştirildi -->
+    <div class="video-container">
+      <video id="loginVideo" src="videoo.mp4" loop playsinline></video>
+    </div>
   </div>
 
   <script>
@@ -96,26 +97,23 @@
         errorMsg.textContent = "اسم المستخدم وكلمة المرور غير صحيحين!";
       }
     }
+
+    // Sayfa yüklenince sesli oynatmayı dene
+    document.addEventListener("DOMContentLoaded", function () {
+      const video = document.getElementById("loginVideo");
+      video.muted = false;
+
+      function tryPlay() {
+        video.play().catch(() => {
+          // Otomatik çalmazsa kullanıcıdan tıklama bekle
+          document.body.addEventListener("click", () => {
+            video.play();
+          }, { once: true });
+        });
+      }
+
+      tryPlay();
+    });
   </script>
-  <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const video = document.querySelector("video");
-
-    // Sessiz başlamasın (sesli olsun)
-    video.muted = false;
-
-    // Kullanıcı dokununca otomatik başlat
-    function tryPlay() {
-      video.play().catch(() => {
-        // Otomatik çalışmazsa kullanıcıdan etkileşim bekle
-        document.body.addEventListener("click", () => {
-          video.play();
-        }, { once: true });
-      });
-    }
-
-    tryPlay();
-  });
-</script>
 </body>
 </html>

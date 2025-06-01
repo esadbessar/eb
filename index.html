@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>تسجيل الدخول</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta charset="UTF-8" />
+  <!-- Yakınlaştırmayı engelle -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>موقع خطير</title>
   <style>
     body {
       margin: 0;
@@ -34,7 +35,7 @@
       margin: 8px 0;
       border: 1px solid #ccc;
       border-radius: 8px;
-      font-size: 16px;
+      font-size: 16px; /* Mobilde zoom olmaması için şart */
     }
 
     button {
@@ -44,14 +45,12 @@
       color: white;
       border: none;
       border-radius: 8px;
-      font-size: 16px;
+      font-size: 16px; /* Aynı şekilde burada da */
       cursor: pointer;
     }
 
-    .video-container video {
-      width: 100%;
-      border-radius: 10px;
-      margin-top: 20px;
+    button:hover {
+      background-color: #0056b3;
     }
 
     .error {
@@ -59,29 +58,56 @@
       text-align: center;
       margin-top: 10px;
     }
+
+    .video-container {
+      margin-top: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .video-container video {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      display: block;
+    }
   </style>
 </head>
 <body>
   <div class="login-container">
     <h2>تسجيل الدخول</h2>
-    <form method="POST" action="login.php">
-      <input type="text" name="username" placeholder="اسم المستخدم" required>
-      <input type="password" name="password" placeholder="كلمة المرور" required>
-      <button type="submit">مدخل</button>
-    </form>
+    <input type="text" id="username" placeholder="اسم المستخدم">
+    <input type="password" id="password" placeholder="كلمة المرور">
+    <button onclick="login()">مدخل</button>
+    <div class="error" id="errorMsg"></div>
+
+    <!-- Video giriş kutusunun hemen altında -->
     <div class="video-container">
-      <video id="loginVideo" autoplay loop playsinline>
+      <video id="loginVideo" loop playsinline>
         <source src="videoo.mp4" type="video/mp4">
-        المتصفح لا يدعم الفيديو.
+        Tarayıcınız video etiketini desteklemiyor.
       </video>
     </div>
   </div>
 
   <script>
+    function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const errorMsg = document.getElementById('errorMsg');
+
+      if (username === 'arduino' && password === '31') {
+        window.location.href = 'esad.html';
+      } else {
+        errorMsg.textContent = "اسم المستخدم وكلمة المرور غير صحيحين!";
+      }
+    }
+
+    // Sayfa açıldığında videoyu sesli başlatmayı dene
     window.addEventListener("DOMContentLoaded", () => {
       const video = document.getElementById("loginVideo");
 
-      // Sesi açmayı dene
+      // Önce mute olarak başlat, sonra sesi aç
       video.muted = false;
       video.volume = 1;
 
@@ -90,12 +116,10 @@
       if (playPromise !== undefined) {
         playPromise
           .then(() => {
-            // Video sesli şekilde başladıysa buraya gelir
-            console.log("Video başarıyla sesli başlatıldı.");
+            // Başarıyla başladı, sesi açık bırak
           })
           .catch(() => {
-            // Tarayıcı engellediyse kullanıcı tıklamasını bekle
-            console.warn("Video sesli başlayamadı, kullanıcı etkileşimi bekleniyor.");
+            // Otomatik oynatma başarısızsa kullanıcı tıklamasını bekle
             document.body.addEventListener("click", () => {
               video.muted = false;
               video.volume = 1;

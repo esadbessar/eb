@@ -79,11 +79,12 @@
     <button onclick="login()">مدخل</button>
     <div class="error" id="errorMsg"></div>
 
-    <!-- Video tam altına yerleştirildi -->
+    <!-- Video tam giriş kutusunun altına yerleştirildi -->
     <div class="video-container">
-      <video loop autoplay playsinline>
-  <source src="videoo.mp4" type="video/mp4">
-</video>
+      <video id="loginVideo" autoplay muted loop playsinline>
+        <source src="videoo.mp4" type="video/mp4" />
+        Tarayıcınız video etiketini desteklemiyor.
+      </video>
     </div>
   </div>
 
@@ -98,25 +99,35 @@
       } else {
         errorMsg.textContent = "اسم المستخدم وكلمة المرور غير صحيحين!";
       }
-    }      
-  </script>
-<script>
-  const video = document.getElementById("loginVideo");
+    }
 
-  // Sessiz şekilde otomatik oynat
-  video.play().then(() => {
-    // Başarıyla başladıysa sesi açmayı dene
-    video.muted = false;
-    video.volume = 1;
-    return video.play();
-  }).catch(() => {
-    // Eğer sessiz de olsa başlamazsa, kullanıcı etkileşimiyle başlat
-    document.body.addEventListener("click", () => {
-      video.muted = false;
-      video.volume = 1;
-      video.play();
-    }, { once: true });
-  });
-</script>
+    // Video otomatik sesli başlamaya çalışır, engellenirse tıklamada sesi açar
+    document.addEventListener("DOMContentLoaded", function () {
+      const video = document.getElementById("loginVideo");
+
+      // Önce sessiz başlat
+      video.muted = true;
+      video.play().then(() => {
+        // Ardından sesi açmaya çalış
+        video.muted = false;
+        video.volume = 1.0;
+        video.play().catch(() => {
+          // Eğer engellenirse, kullanıcı tıklamasında yeniden dene
+          document.body.addEventListener("click", () => {
+            video.muted = false;
+            video.volume = 1.0;
+            video.play();
+          }, { once: true });
+        });
+      }).catch(() => {
+        // Eğer sessiz de başlamazsa yine kullanıcı tıklamasına ihtiyaç var
+        document.body.addEventListener("click", () => {
+          video.muted = false;
+          video.volume = 1.0;
+          video.play();
+        }, { once: true });
+      });
+    });
+  </script>
 </body>
 </html>

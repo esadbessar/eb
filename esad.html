@@ -18,6 +18,27 @@
       max-height: 100vh;
       object-fit: contain;
     }
+
+    .secret-button {
+      text-align: center;
+      margin-top: 20px;
+      margin-bottom: 40px;
+    }
+
+    .secret-button button {
+      background-color: #000;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      font-size: 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .secret-button button:hover {
+      background-color: #333;
+    }
   </style>
 </head>
 <body>
@@ -89,6 +110,10 @@
 <audio id="myAudio" autoplay muted loop>
   <source src="esad.mp3" type="audio/mpeg" />
 </audio>
+
+<div class="secret-button">
+  <button onclick="window.location.href='surprise.html'">kardeşim gizli buton</button>
+</div>
 
 <script>
   window.addEventListener("click", () => {

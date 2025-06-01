@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Gerçek bilgiler
+// Doğru kullanıcı adı ve şifre
 $correctUsername = 'arduino';
 $correctPassword = '31';
 
@@ -11,9 +11,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($username === $correctUsername && $password === $correctPassword) {
         $_SESSION['authenticated'] = true;
-        header("Location: esad.php");
+
+        // Giriş başarılıysa esad.html'e yönlendir
+        header("Location: esad.html");
         exit();
     } else {
+        // Giriş başarısızsa uyarı göster ve geri dön
         echo "<script>
                 alert('اسم المستخدم أو كلمة المرور غير صحيحة!');
                 window.location.href = 'index.html';

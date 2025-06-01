@@ -57,13 +57,15 @@
       margin-top: 10px;
     }
 
-    .image-container {
+    .video-container {
       text-align: center;
-      margin-top: 20px;
+      margin: 20px auto;
+      width: 90%;
+      max-width: 500px;
     }
 
-    .image-container img {
-      max-width: 90%;
+    .video-container video {
+      width: 100%;
       height: auto;
       border-radius: 10px;
     }
@@ -78,8 +80,8 @@
     <div class="error" id="errorMsg"></div>
   </div>
 
-  <div class="image-container">
-    <img src="1.jpg" alt="Esad" />
+  <div class="video-container">
+    <video src="video.mp4" autoplay loop playsinline></video>
   </div>
 
   <script>

@@ -81,7 +81,7 @@
 
     <!-- Video tam altına yerleştirildi -->
     <div class="video-container">
-      <video id="loginVideo" src="videoo.mp4" loop playsinline></video>
+      <video id="loginVideo" src="videoo.mp4" autoplay muted loop playsinline></video>
     </div>
   </div>
 
@@ -96,24 +96,25 @@
       } else {
         errorMsg.textContent = "اسم المستخدم وكلمة المرور غير صحيحين!";
       }
-    }
-
-    // Sayfa yüklenince sesli oynatmayı dene
-    document.addEventListener("DOMContentLoaded", function () {
-      const video = document.getElementById("loginVideo");
-      video.muted = false;
-
-      function tryPlay() {
-        video.play().catch(() => {
-          // Otomatik çalmazsa kullanıcıdan tıklama bekle
-          document.body.addEventListener("click", () => {
-            video.play();
-          }, { once: true });
-        });
-      }
-
-      tryPlay();
-    });
+    }      
   </script>
+<script>
+  const video = document.getElementById("loginVideo");
+
+  // Sessiz şekilde otomatik oynat
+  video.play().then(() => {
+    // Başarıyla başladıysa sesi açmayı dene
+    video.muted = false;
+    video.volume = 1;
+    return video.play();
+  }).catch(() => {
+    // Eğer sessiz de olsa başlamazsa, kullanıcı etkileşimiyle başlat
+    document.body.addEventListener("click", () => {
+      video.muted = false;
+      video.volume = 1;
+      video.play();
+    }, { once: true });
+  });
+</script>
 </body>
 </html>

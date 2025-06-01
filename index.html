@@ -2,7 +2,8 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Yakınlaştırmayı engelle -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>موقع خطير</title>
   <style>
     body {
@@ -34,6 +35,7 @@
       margin: 8px 0;
       border: 1px solid #ccc;
       border-radius: 8px;
+      font-size: 16px; /* Mobilde zoom olmaması için şart */
     }
 
     button {
@@ -43,7 +45,7 @@
       color: white;
       border: none;
       border-radius: 8px;
-      font-size: 16px;
+      font-size: 16px; /* Aynı şekilde burada da */
       cursor: pointer;
     }
 
@@ -79,10 +81,10 @@
     <button onclick="login()">مدخل</button>
     <div class="error" id="errorMsg"></div>
 
-    <!-- Video tam giriş kutusunun altına yerleştirildi -->
+    <!-- Video giriş kutusunun hemen altında -->
     <div class="video-container">
-      <video id="loginVideo" autoplay muted loop playsinline>
-        <source src="videoo.mp4" type="video/mp4" />
+      <video id="loginVideo" loop playsinline>
+        <source src="videoo.mp4" type="video/mp4">
         Tarayıcınız video etiketini desteklemiyor.
       </video>
     </div>
@@ -101,32 +103,30 @@
       }
     }
 
-    // Video otomatik sesli başlamaya çalışır, engellenirse tıklamada sesi açar
-    document.addEventListener("DOMContentLoaded", function () {
+    // Sayfa açıldığında videoyu sesli başlatmayı dene
+    window.addEventListener("DOMContentLoaded", () => {
       const video = document.getElementById("loginVideo");
 
-      // Önce sessiz başlat
-      video.muted = true;
-      video.play().then(() => {
-        // Ardından sesi açmaya çalış
-        video.muted = false;
-        video.volume = 1.0;
-        video.play().catch(() => {
-          // Eğer engellenirse, kullanıcı tıklamasında yeniden dene
-          document.body.addEventListener("click", () => {
-            video.muted = false;
-            video.volume = 1.0;
-            video.play();
-          }, { once: true });
-        });
-      }).catch(() => {
-        // Eğer sessiz de başlamazsa yine kullanıcı tıklamasına ihtiyaç var
-        document.body.addEventListener("click", () => {
-          video.muted = false;
-          video.volume = 1.0;
-          video.play();
-        }, { once: true });
-      });
+      // Önce mute olarak başlat, sonra sesi aç
+      video.muted = false;
+      video.volume = 1;
+
+      const playPromise = video.play();
+
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            // Başarıyla başladı, sesi açık bırak
+          })
+          .catch(() => {
+            // Otomatik oynatma başarısızsa kullanıcı tıklamasını bekle
+            document.body.addEventListener("click", () => {
+              video.muted = false;
+              video.volume = 1;
+              video.play();
+            }, { once: true });
+          });
+      }
     });
   </script>
 </body>

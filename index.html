@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <!-- Yakınlaştırmayı engelle -->
+  <!-- Mobilde zoom'u engelle -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>موقع خطير</title>
   <style>
@@ -14,33 +14,59 @@
       font-family: Arial, sans-serif;
     }
 
+    .login {
+      position: relative;
+      width: 320px;
+      margin: 100px auto;
+      padding: 20px;
+      z-index: 1;
+      box-sizing: border-box;
+    }
+
     .login::before {
-     content:"";
-     position: absolute;
-     width:100%;
-     height:100%;
-     filter: drop-shadow(0 15px 50px #000);
-     border-radius: 20px;
-     animation: rotating 4s linear infinite;
-     animation-delay: -1s;
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 15px 50px #000);
+      border-radius: 20px;
+      animation: rotating 4s linear infinite;
+      animation-delay: -1s;
+      z-index: -2;
     }
 
     .login::after {
-     content:"";
-     position: absolute;
-     inset: 4px;
-     background: #2d2d39;
-     border-radius: 15px;
-     border: 8px solid #25252b;
+      content: "";
+      position: absolute;
+      inset: 4px;
+      background: #2d2d39;
+      border-radius: 15px;
+      border: 8px solid #25252b;
+      z-index: -1;
     }
 
-    input[type="text"], input[type="password"] {
+    @keyframes rotating {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .login h2 {
+      color: white;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
       width: 100%;
       padding: 12px;
       margin: 8px 0;
       border: 1px solid #ccc;
       border-radius: 8px;
-      font-size: 16px; /* Mobilde zoom olmaması için şart */
+      font-size: 16px;
+      box-sizing: border-box;
     }
 
     button {
@@ -50,7 +76,7 @@
       color: white;
       border: none;
       border-radius: 8px;
-      font-size: 16px; /* Aynı şekilde burada da */
+      font-size: 16px;
       cursor: pointer;
     }
 
@@ -79,21 +105,21 @@
   </style>
 </head>
 <body>
-  <div class="login::before">
+  <div class="login">
     <h2>تسجيل الدخول</h2>
-  </div>
-  <div class="login::after">
-    <input type="text" id="username" placeholder="اسم المستخدم">
-    <input type="password" id="password" placeholder="كلمة المرور">
-    <button onclick="login()">مدخل</button>
-    <div class="error" id="errorMsg"></div>
+    <form onsubmit="login(); return false;">
+      <input type="text" id="username" placeholder="اسم المستخدم">
+      <input type="password" id="password" placeholder="كلمة المرور">
+      <button type="submit">مدخل</button>
+      <div class="error" id="errorMsg"></div>
+    </form>
 
-    <!-- Video giriş kutusunun hemen altında -->
     <div class="video-container">
-      <video id="loginVideo" loop playsinline>
+      <video id="loginVideo" loop playsinline muted>
         <source src="videoo.mp4" type="video/mp4">
         Tarayıcınız video etiketini desteklemiyor.
       </video>
+    </div>
   </div>
 
   <script>
@@ -109,29 +135,20 @@
       }
     }
 
-    // Sayfa açıldığında videoyu sesli başlatmayı dene
+    // Sayfa açıldığında video otomatik başlasın (mümkünse)
     window.addEventListener("DOMContentLoaded", () => {
       const video = document.getElementById("loginVideo");
-
-      // Önce mute olarak başlat, sonra sesi aç
-      video.muted = false;
       video.volume = 1;
 
       const playPromise = video.play();
 
       if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            // Başarıyla başladı, sesi açık bırak
-          })
-          .catch(() => {
-            // Otomatik oynatma başarısızsa kullanıcı tıklamasını bekle
-            document.body.addEventListener("click", () => {
-              video.muted = false;
-              video.volume = 1;
-              video.play();
-            }, { once: true });
-          });
+        playPromise.catch(() => {
+          document.body.addEventListener("click", () => {
+            video.muted = false;
+            video.play();
+          }, { once: true });
+        });
       }
     });
   </script>

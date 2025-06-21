@@ -1,0 +1,64 @@
+!<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hata! Erişim Reddedildi</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Dikeyde de ortala */
+            min-height: 100vh;
+            background-color: #000; /* Koyu arka plan */
+            color: #fff;
+            font-family: sans-serif;
+            text-align: center;
+            padding: 20px; /* Kenarlardan boşluk */
+            box-sizing: border-box; /* Padding'i genişliğe dahil et */
+        }
+
+        .hero-text {
+            font-size: 10vw; /* Ekran genişliğine duyarlı yazı boyutu */
+            background-color: red;
+            color: white;
+            font-weight: bold;
+            width: 100%;
+            padding: 20px 0;
+            box-sizing: border-box; /* Padding'i genişliğe dahil et */
+            margin-bottom: 20px; /* Video ile arasında boşluk */
+        }
+
+        /* Daha küçük ekranlar için yazı boyutu ayarı */
+        @media (max-width: 600px) {
+            .hero-text {
+                font-size: 12vw; /* Telefonlarda daha büyük yazı */
+            }
+        }
+
+        .video-container {
+            width: 90%; /* Konteynerin genişliği */
+            max-width: 800px; /* Maksimum genişlik */
+            border-radius: 10px; /* Hafif yuvarlak kenarlar */
+            overflow: hidden; /* Taşmaları gizle */
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.7); /* Kırmızı parlama efekti */
+        }
+
+        video {
+            width: 100%; /* Konteyneri doldur */
+            height: auto; /* Oranı koru */
+            display: block; /* Altında boşluk bırakmaz */
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-text">الله أكبر دبابة تتحرك نحو الوطن !!!</div>
+    <div class="video-container">
+        <video src="tank.mp4" autoplay loop muted playsinline>
+            Tarayıcınız video desteklemiyor.
+        </video>
+    </div>
+</body>
+</html>

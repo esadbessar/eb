@@ -2,7 +2,6 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <!-- Mobilde zoom'u engelle -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>موقع خطير</title>
   <style>
@@ -19,31 +18,31 @@
       width: 320px;
       margin: 100px auto;
       padding: 20px;
-      z-index: 1;
       box-sizing: border-box;
+      z-index: 1;
     }
 
     .login::before {
       content: "";
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      filter: drop-shadow(0 15px 50px #000);
-      border-radius: 20px;
-      animation: rotating 4s linear infinite;
-      animation-delay: -1s;
+      top: -15px;
+      left: -15px;
+      width: calc(100% + 30px);
+      height: calc(100% + 30px);
+      background: conic-gradient(#00f, #f0f, #0ff, #00f);
+      border-radius: 30px;
+      filter: blur(10px);
+      animation: rotating 6s linear infinite;
       z-index: -2;
     }
 
     .login::after {
       content: "";
       position: absolute;
-      inset: 4px;
-      background: #2d2d39;
-      border-radius: 15px;
-      border: 8px solid #25252b;
+      inset: 0;
+      background: rgba(45, 45, 57, 0.95);
+      border-radius: 20px;
+      border: 4px solid #25252b;
       z-index: -1;
     }
 
@@ -58,8 +57,7 @@
       margin-bottom: 20px;
     }
 
-    input[type="text"],
-    input[type="password"] {
+    input[type="text"], input[type="password"] {
       width: 100%;
       padding: 12px;
       margin: 8px 0;
@@ -108,14 +106,14 @@
   <div class="login">
     <h2>تسجيل الدخول</h2>
     <form onsubmit="login(); return false;">
-      <input type="text" id="username" placeholder="اسم المستخدم">
-      <input type="password" id="password" placeholder="كلمة المرور">
+      <input type="text" id="username" placeholder="اسم المستخدم" />
+      <input type="password" id="password" placeholder="كلمة المرور" />
       <button type="submit">مدخل</button>
       <div class="error" id="errorMsg"></div>
     </form>
 
     <div class="video-container">
-      <video id="loginVideo" loop playsinline muted>
+      <video id="loginVideo" loop playsinline muted autoplay>
         <source src="videoo.mp4" type="video/mp4">
         Tarayıcınız video etiketini desteklemiyor.
       </video>
@@ -135,9 +133,10 @@
       }
     }
 
-    // Sayfa açıldığında video otomatik başlasın (mümkünse)
+    // Video sesi açmak için kullanıcı etkileşimini bekle
     window.addEventListener("DOMContentLoaded", () => {
       const video = document.getElementById("loginVideo");
+      video.muted = true;
       video.volume = 1;
 
       const playPromise = video.play();
@@ -146,6 +145,7 @@
         playPromise.catch(() => {
           document.body.addEventListener("click", () => {
             video.muted = false;
+            video.volume = 1;
             video.play();
           }, { once: true });
         });

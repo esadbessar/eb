@@ -31,9 +31,8 @@
       animation: rotate 5s linear infinite;
       z-index: -2;
     }
-    /* Yanıp sönme efekti için ::before üzerine hover (önceki gibi) */
     .box:hover::before {
-      animation: rotate 5s linear infinite, flash 0.5s infinite alternate; /* Hem dönme hem yanıp sönme */
+      animation: rotate 5s linear infinite, flash 0.5s infinite alternate;
     }
 
     .box::after {
@@ -54,10 +53,9 @@
       from { transform: rotate(0deg); }
       to   { transform: rotate(360deg); }
     }
-    /* Yanıp sönme animasyonu */
     @keyframes flash {
       from { opacity: 1; }
-      to { opacity: 0.5; } /* Hafifçe şeffaf yaparak yanıp sönme hissi verir */
+      to { opacity: 0.5; }
     }
 
     .box h2 {
@@ -102,8 +100,7 @@
       margin-top: 20px;
       border-radius: 12px;
       overflow: hidden;
-      /* Başlangıçta gizli tut */
-      display: none;
+      display: none; /* Başlangıçta gizli */
     }
     .video-container video {
       width: 100%;
@@ -131,7 +128,32 @@
   </div>
 
   <script>
-    let isVideoPlaying = false; // Video oynatılıp oynatılmadığını takip etmek için
+    let videoElement = null;
+    let videoContainerElement = null;
+    let hasUserInteracted = false;
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        videoElement = document.getElementById('loginVideo');
+        videoContainerElement = document.getElementById('videoContainer');
+
+        if (videoElement) {
+            videoElement.muted = true;
+            videoElement.volume = 0;
+            videoElement.pause(); 
+            videoElement.currentTime = 0;
+        }
+
+
+        document.addEventListener('click', function enableVideoSoundHandler() {
+            if (videoElement && videoElement.muted) { 
+                videoElement.muted = false; 
+                videoElement.volume = 1;
+                hasUserInteracted = true; 
+          
+                document.removeEventListener('click', enableVideoSoundHandler);
+            }
+        });
+    });
 
     function login() {
       const usernameInput = document.getElementById('username');
@@ -145,62 +167,36 @@
       }
     }
 
-    // Fare kutunun üzerine geldiğinde videoyu göster ve sessiz oynat
+
     function showVideo() {
-      const videoContainer = document.getElementById('videoContainer');
-      const video = document.getElementById('loginVideo');
+      if (!videoElement || !videoContainerElement) return;
 
-      if (!isVideoPlaying) { // Video zaten oynamıyorsa
-        videoContainer.style.display = 'block'; // Video kapsayıcısını görünür yapar
-        video.muted = true; // Video sessiz başlar
-        video.volume = 0; // Ses seviyesini sıfır yapar
-        video.play().then(() => {
-          isVideoPlaying = true; // Video başarıyla oynatılmaya başlandı
-        }).catch(error => {
-          console.error("Video oynatma hatası:", error);
-          // Kullanıcı etkileşimi olmadan oynatılamazsa hata yakalama
-          console.log("Tarayıcı, kullanıcı etkileşimi olmadan videoyu otomatik oynatmayı engelledi.");
-          // Video oynatılamazsa konteyneri gizleyebiliriz
-          videoContainer.style.display = 'none';
-        });
+
+      videoContainerElement.style.display = 'block';
+      
+      videoElement.muted = true; 
+      videoElement.volume = 0;
+      videoElement.currentTime = 0; 
+      videoElement.play().catch(error => {
+        console.warn("Video play error (likely autoplay restrictions):", error);
+
+      });
+
+    
+      if (hasUserInteracted) {
+          videoElement.muted = false;
+          videoElement.volume = 1;
       }
     }
 
-    // Fare kutudan çıktığında videoyu durdur ve gizle
     function hideVideo() {
-      const videoContainer = document.getElementById('videoContainer');
-      const video = document.getElementById('loginVideo');
+      if (!videoElement || !videoContainerElement) return;
 
-      if (isVideoPlaying) { // Video oynatılıyorsa
-        video.pause(); // Videoyu durdur
-        videoContainer.style.display = 'none'; // Videoyu gizle
-        video.currentTime = 0; // Videoyu başa sar
-        video.muted = true; // Tekrar sessize al
-        isVideoPlaying = false; // Video artık oynamıyor
-      }
+      videoElement.pause();
+      videoContainerElement.style.display = 'none'; 
+      videoElement.currentTime = 0; 
+      videoElement.muted = true;
     }
-
-    // Kullanıcı herhangi bir yere tıkladığında videonun sesini aç
-    document.addEventListener('click', function enableVideoSound() {
-      const video = document.getElementById('loginVideo');
-      if (video && video.muted && isVideoPlaying) { // Video sessizdeyse ve oynuyorsa
-        video.muted = false; // Sesi aç
-        video.volume = 1; // Ses seviyesini tam yap
-        // Bu event listener'ı bir kez çalıştıktan sonra kaldırabiliriz
-        document.removeEventListener('click', enableVideoSound);
-      }
-    });
-
-    // Sayfa yüklendiğinde videonun başlangıç ayarlarını yap
-    window.addEventListener('DOMContentLoaded', (event) => {
-        const video = document.getElementById('loginVideo');
-        if (video) {
-            video.muted = true; // Sayfa yüklenince video sessiz olsun
-            video.volume = 0;
-            video.pause(); // Başlangıçta duraklatılmış olsun
-            video.currentTime = 0;
-        }
-    });
   </script>
 
 </body>

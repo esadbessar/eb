@@ -2,149 +2,119 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تسجيل الدخول</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      height: 100vh;
-      background: url('syria.jpg') no-repeat center center fixed;
-      background-size: cover;
+      background: #111;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-family: 'Segoe UI', sans-serif;
+      height: 100vh;
+      font-family: sans-serif;
     }
-
-    .login {
+    .box {
       position: relative;
-      width: 340px;
+      width: 320px;
       padding: 30px;
       border-radius: 20px;
-      z-index: 1;
       overflow: hidden;
+      z-index: 1;
     }
-
-    .login::before {
+    .box::before {
       content: "";
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: conic-gradient(#00ffff, #ff00ff, #00ffff);
-      animation: rotate 6s linear infinite;
+      inset: 0;
+      background: linear-gradient(135deg, #00fff7, #ff00c8);
+      filter: blur(20px);
+      animation: rotate 5s linear infinite;
       z-index: -2;
     }
-
-    .login:hover::after {
+    .box::after {
       content: "";
       position: absolute;
-      inset: 4px;
-      background: rgba(0, 0, 0, 0.7);
+      inset: 5px;
+      background: #1c1c24;
       border-radius: 15px;
-      border: 4px solid #ff0055;
+      border: 1px solid #2a2a38;
       z-index: -1;
+    }
+    .box:hover::after {
+      border-color: #ff0080;
+      box-shadow: 0 0 15px #ff00cc;
       transition: 0.3s;
     }
-
     @keyframes rotate {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
     }
-
-    .login-box {
-      position: relative;
-      background: rgba(45, 45, 57, 0.95);
-      border-radius: 15px;
-      padding: 25px;
-      z-index: 1;
-    }
-
-    .login-box h2 {
-      text-align: center;
+    .box h2 {
       color: #fff;
+      text-align: center;
       margin-bottom: 20px;
     }
-
-    .login-box input {
+    .box input {
       width: 100%;
       padding: 12px;
       margin: 10px 0;
-      border-radius: 30px;
       border: none;
-      font-size: 15px;
+      border-radius: 25px;
+      font-size: 14px;
       outline: none;
       text-align: right;
+      background: #fff;
     }
-
-    .login-box input::placeholder {
-      text-align: right;
-      color: #aaa;
-    }
-
-    .login-box button {
+    .box button {
       width: 100%;
       padding: 12px;
-      margin-top: 10px;
       background: #00e5ff;
+      color: #000;
       border: none;
-      border-radius: 30px;
-      font-weight: bold;
+      border-radius: 25px;
       font-size: 16px;
+      margin-top: 10px;
       cursor: pointer;
+      font-weight: bold;
     }
-
-    .login-box .links {
+    .links {
       display: flex;
       justify-content: space-between;
-      margin-top: 10px;
       font-size: 13px;
-      color: #fff;
+      margin-top: 10px;
     }
-
-    .login-box .links a {
+    .links a {
       color: #ff0055;
       text-decoration: none;
     }
-
     .video-container {
       margin-top: 20px;
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
     }
-
     .video-container video {
       width: 100%;
-      border-radius: 10px;
+      border-radius: 12px;
       display: block;
     }
   </style>
 </head>
 <body>
 
-  <div class="login">
-    <div class="login-box">
-      <h2>🔊 تسجيل الدخول ❤️</h2>
-      <input type="text" id="username" placeholder="اسم المستخدم">
-      <input type="password" id="password" placeholder="كلمة المرور">
-      <button onclick="login()">دخول</button>
-      <div class="links">
-        <a href="#">نسيت كلمة المرور؟</a>
-        <a href="#">إنشاء حساب</a>
-      </div>
-
-      <div class="video-container">
-        <video id="loginVideo" loop playsinline autoplay muted>
-          <source src="videoo.mp4" type="video/mp4">
-          المتصفح لا يدعم الفيديو.
-        </video>
-      </div>
+  <div class="box">
+    <h2>❤️ تسجيل الدخول 🔊</h2>
+    <input type="text" id="username" placeholder="اسم المستخدم">
+    <input type="password" id="password" placeholder="كلمة المرور">
+    <button onclick="login()">دخول</button>
+    <div class="links">
+      <a href="#">نسيت كلمة المرور؟</a>
+      <a href="#">إنشاء حساب</a>
+    </div>
+    <div class="video-container">
+      <video id="loginVideo" autoplay loop playsinline>
+        <source src="videoo.mp4" type="video/mp4">
+        لا يدعم متصفحك الفيديو.
+      </video>
     </div>
   </div>
 
@@ -152,33 +122,22 @@
     function login() {
       const u = document.getElementById('username').value;
       const p = document.getElementById('password').value;
-
       if (u === 'arduino' && p === '31') {
-        alert("تم تسجيل الدخول بنجاح");
-        window.location.href = "esad.html";
+        alert("تم تسجيل الدخول");
+        window.location.href = 'esad.html';
       } else {
-        alert("اسم المستخدم أو كلمة المرور غير صحيحة");
+        alert("بيانات خاطئة");
       }
     }
 
     window.addEventListener("DOMContentLoaded", () => {
       const video = document.getElementById("loginVideo");
-      video.muted = true;
-      video.volume = 1;
+      video.play().catch(() => { /* ignore */ });
 
-      const playPromise = video.play();
-
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          document.body.addEventListener("click", () => {
-            video.muted = false;
-            video.play();
-          }, { once: true });
-        });
-      } else {
-        
+      document.body.addEventListener("click", function openSound() {
         video.muted = false;
-      }
+        document.body.removeEventListener("click", openSound);
+      });
     });
   </script>
 

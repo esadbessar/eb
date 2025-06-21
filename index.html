@@ -31,6 +31,11 @@
       animation: rotate 5s linear infinite;
       z-index: -2;
     }
+    /* Yanıp sönme efekti için ::before üzerine hover (önceki gibi) */
+    .box:hover::before {
+      animation: rotate 5s linear infinite, flash 0.5s infinite alternate; /* Hem dönme hem yanıp sönme */
+    }
+
     .box::after {
       content: "";
       position: absolute;
@@ -49,6 +54,12 @@
       from { transform: rotate(0deg); }
       to   { transform: rotate(360deg); }
     }
+    /* Yanıp sönme animasyonu */
+    @keyframes flash {
+      from { opacity: 1; }
+      to { opacity: 0.5; } /* Hafifçe şeffaf yaparak yanıp sönme hissi verir */
+    }
+
     .box h2 {
       color: #fff;
       text-align: center;
@@ -91,6 +102,8 @@
       margin-top: 20px;
       border-radius: 12px;
       overflow: hidden;
+      /* Başlangıçta gizli tut */
+      display: none;
     }
     .video-container video {
       width: 100%;
@@ -101,7 +114,7 @@
 </head>
 <body>
 
-  <div class="box">
+  <div class="box" onmouseover="showVideo()" onmouseout="hideVideo()">
     <h2>❤️ تسجيل الدخول 🔊</h2>
     <input type="text" id="username" placeholder="اسم المستخدم">
     <input type="password" id="password" placeholder="كلمة المرور">
@@ -110,19 +123,21 @@
       <a href="#">نسيت كلمة المرور؟</a>
       <a href="#">إنشاء حساب</a>
     </div>
-    <div class="video-container">
-      <video id="loginVideo" autoplay loop playsinline>
-        <source src="videoo.mp4" type="video/mp4">
-        لا يدعم متصفحك الفيديو.
+    <div class="video-container" id="videoContainer">
+      <video id="loginVideo" loop playsinline muted> <source src="videoo.mp4" type="video/mp4">
+        Tarayıcınız video desteklemiyor.
       </video>
     </div>
   </div>
 
   <script>
+    let isVideoPlaying = false; // Video oynatılıp oynatılmadığını takip etmek için
+
     function login() {
-      const u = document.getElementById('username').value;
-      const p = document.getElementById('password').value;
-      if (u === 'arduino' && p === '31') {
+      const usernameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+
+      if (usernameInput.value === 'arduino' && passwordInput.value === '31') {
         alert("تم تسجيل الدخول");
         window.location.href = 'esad.html';
       } else {
@@ -130,14 +145,61 @@
       }
     }
 
-    window.addEventListener("DOMContentLoaded", () => {
-      const video = document.getElementById("loginVideo");
-      video.play().catch(() => { /* ignore */ });
+    // Fare kutunun üzerine geldiğinde videoyu göster ve sessiz oynat
+    function showVideo() {
+      const videoContainer = document.getElementById('videoContainer');
+      const video = document.getElementById('loginVideo');
 
-      document.body.addEventListener("click", function openSound() {
-        video.muted = false;
-        document.body.removeEventListener("click", openSound);
-      });
+      if (!isVideoPlaying) { // Video zaten oynamıyorsa
+        videoContainer.style.display = 'block'; // Video kapsayıcısını görünür yapar
+        video.muted = true; // Video sessiz başlar
+        video.volume = 0; // Ses seviyesini sıfır yapar
+        video.play().then(() => {
+          isVideoPlaying = true; // Video başarıyla oynatılmaya başlandı
+        }).catch(error => {
+          console.error("Video oynatma hatası:", error);
+          // Kullanıcı etkileşimi olmadan oynatılamazsa hata yakalama
+          console.log("Tarayıcı, kullanıcı etkileşimi olmadan videoyu otomatik oynatmayı engelledi.");
+          // Video oynatılamazsa konteyneri gizleyebiliriz
+          videoContainer.style.display = 'none';
+        });
+      }
+    }
+
+    // Fare kutudan çıktığında videoyu durdur ve gizle
+    function hideVideo() {
+      const videoContainer = document.getElementById('videoContainer');
+      const video = document.getElementById('loginVideo');
+
+      if (isVideoPlaying) { // Video oynatılıyorsa
+        video.pause(); // Videoyu durdur
+        videoContainer.style.display = 'none'; // Videoyu gizle
+        video.currentTime = 0; // Videoyu başa sar
+        video.muted = true; // Tekrar sessize al
+        isVideoPlaying = false; // Video artık oynamıyor
+      }
+    }
+
+    // Kullanıcı herhangi bir yere tıkladığında videonun sesini aç
+    document.addEventListener('click', function enableVideoSound() {
+      const video = document.getElementById('loginVideo');
+      if (video && video.muted && isVideoPlaying) { // Video sessizdeyse ve oynuyorsa
+        video.muted = false; // Sesi aç
+        video.volume = 1; // Ses seviyesini tam yap
+        // Bu event listener'ı bir kez çalıştıktan sonra kaldırabiliriz
+        document.removeEventListener('click', enableVideoSound);
+      }
+    });
+
+    // Sayfa yüklendiğinde videonun başlangıç ayarlarını yap
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const video = document.getElementById('loginVideo');
+        if (video) {
+            video.muted = true; // Sayfa yüklenince video sessiz olsun
+            video.volume = 0;
+            video.pause(); // Başlangıçta duraklatılmış olsun
+            video.currentTime = 0;
+        }
     });
   </script>
 

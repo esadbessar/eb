@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>تسجيل الدخول</title>
   <style>
     * {
@@ -13,45 +13,44 @@
 
     body {
       height: 100vh;
-      background: #111;
-      font-family: 'Segoe UI', sans-serif;
+      background: url('syria.jpg') no-repeat center center fixed;
+      background-size: cover;
       display: flex;
       justify-content: center;
       align-items: center;
-      direction: rtl;
+      font-family: 'Segoe UI', sans-serif;
     }
 
-    .box {
+    .login {
       position: relative;
-      width: 320px;
-      padding: 40px 30px;
+      width: 340px;
+      padding: 30px;
       border-radius: 20px;
       z-index: 1;
-      color: white;
+      overflow: hidden;
     }
 
-    .box::before {
+    .login::before {
       content: "";
       position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      background: linear-gradient(45deg, #0ff, #f0f, #0ff);
-      filter: drop-shadow(0 15px 50px #000);
-      border-radius: 20px;
-      animation: rotate 4s linear infinite;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(#00ffff, #ff00ff, #00ffff);
+      animation: rotate 6s linear infinite;
       z-index: -2;
     }
 
-    .box::after {
+    .login:hover::after {
       content: "";
       position: absolute;
       inset: 4px;
-      background: #2d2d39;
+      background: rgba(0, 0, 0, 0.7);
       border-radius: 15px;
-      border: 8px solid #25252b;
+      border: 4px solid #ff0055;
       z-index: -1;
+      transition: 0.3s;
     }
 
     @keyframes rotate {
@@ -59,76 +58,93 @@
       100% { transform: rotate(360deg); }
     }
 
-    .box h2 {
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 24px;
-      letter-spacing: 2px;
+    .login-box {
+      position: relative;
+      background: rgba(45, 45, 57, 0.95);
+      border-radius: 15px;
+      padding: 25px;
+      z-index: 1;
     }
 
-    .box input {
+    .login-box h2 {
+      text-align: center;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    .login-box input {
       width: 100%;
       padding: 12px;
       margin: 10px 0;
-      border: 2px solid #444;
       border-radius: 30px;
-      background: transparent;
-      color: white;
-      font-size: 14px;
+      border: none;
+      font-size: 15px;
       outline: none;
       text-align: right;
     }
 
-    .box input::placeholder {
+    .login-box input::placeholder {
+      text-align: right;
       color: #aaa;
     }
 
-    .box button {
+    .login-box button {
       width: 100%;
       padding: 12px;
-      margin-top: 15px;
+      margin-top: 10px;
+      background: #00e5ff;
       border: none;
       border-radius: 30px;
-      background: #00e5ff;
-      color: black;
       font-weight: bold;
       font-size: 16px;
       cursor: pointer;
-      transition: 0.3s;
     }
 
-    .box button:hover {
-      background: #00bcd4;
-    }
-
-    .box .links {
-      margin-top: 15px;
+    .login-box .links {
       display: flex;
       justify-content: space-between;
+      margin-top: 10px;
       font-size: 13px;
+      color: #fff;
     }
 
-    .box .links a {
+    .login-box .links a {
       color: #ff0055;
       text-decoration: none;
-      transition: 0.3s;
     }
 
-    .box .links a:hover {
-      text-decoration: underline;
+    .video-container {
+      margin-top: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .video-container video {
+      width: 100%;
+      border-radius: 10px;
+      display: block;
     }
   </style>
 </head>
 <body>
 
-  <div class="box">
-    <h2>🔊 تسجيل الدخول ❤️</h2>
-    <input type="text" placeholder="اسم المستخدم" id="username">
-    <input type="password" placeholder="كلمة المرور" id="password">
-    <button onclick="login()">دخول</button>
-    <div class="links">
-      <a href="#">نسيت كلمة المرور؟</a>
-      <a href="#">إنشاء حساب</a>
+  <div class="login">
+    <div class="login-box">
+      <h2>🔊 تسجيل الدخول ❤️</h2>
+      <input type="text" id="username" placeholder="اسم المستخدم">
+      <input type="password" id="password" placeholder="كلمة المرور">
+      <button onclick="login()">دخول</button>
+      <div class="links">
+        <a href="#">نسيت كلمة المرور؟</a>
+        <a href="#">إنشاء حساب</a>
+      </div>
+
+      <div class="video-container">
+        <video id="loginVideo" loop playsinline autoplay muted>
+          <source src="videoo.mp4" type="video/mp4">
+          المتصفح لا يدعم الفيديو.
+        </video>
+      </div>
     </div>
   </div>
 
@@ -144,6 +160,27 @@
         alert("اسم المستخدم أو كلمة المرور غير صحيحة");
       }
     }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const video = document.getElementById("loginVideo");
+      video.muted = true;
+      video.volume = 1;
+
+      const playPromise = video.play();
+
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          document.body.addEventListener("click", () => {
+            video.muted = false;
+            video.play();
+          }, { once: true });
+        });
+      } else {
+        
+        video.muted = false;
+      }
+    });
   </script>
+
 </body>
 </html>

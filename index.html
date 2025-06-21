@@ -1,156 +1,149 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>موقع خطير</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>تسجيل الدخول</title>
   <style>
-    body {
+    * {
       margin: 0;
       padding: 0;
-      background: url('syria.jpg') no-repeat center center fixed;
-      background-size: cover;
-      font-family: Arial, sans-serif;
+      box-sizing: border-box;
     }
 
-    .login {
+    body {
+      height: 100vh;
+      background: #111;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      direction: rtl;
+    }
+
+    .box {
       position: relative;
       width: 320px;
-      margin: 100px auto;
-      padding: 20px;
-      box-sizing: border-box;
+      padding: 40px 30px;
+      border-radius: 20px;
       z-index: 1;
+      color: white;
     }
 
-    .login::before {
+    .box::before {
       content: "";
       position: absolute;
-      top: -15px;
-      left: -15px;
-      width: calc(100% + 30px);
-      height: calc(100% + 30px);
-      background: conic-gradient(#00f, #f0f, #0ff, #00f);
-      border-radius: 30px;
-      filter: blur(10px);
-      animation: rotating 6s linear infinite;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: linear-gradient(45deg, #0ff, #f0f, #0ff);
+      filter: drop-shadow(0 15px 50px #000);
+      border-radius: 20px;
+      animation: rotate 4s linear infinite;
       z-index: -2;
     }
 
-    .login::after {
+    .box::after {
       content: "";
       position: absolute;
-      inset: 0;
-      background: rgba(45, 45, 57, 0.95);
-      border-radius: 20px;
-      border: 4px solid #25252b;
+      inset: 4px;
+      background: #2d2d39;
+      border-radius: 15px;
+      border: 8px solid #25252b;
       z-index: -1;
     }
 
-    @keyframes rotating {
+    @keyframes rotate {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
 
-    .login h2 {
-      color: white;
+    .box h2 {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
+      font-size: 24px;
+      letter-spacing: 2px;
     }
 
-    input[type="text"], input[type="password"] {
+    .box input {
       width: 100%;
       padding: 12px;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #007bff;
+      margin: 10px 0;
+      border: 2px solid #444;
+      border-radius: 30px;
+      background: transparent;
       color: white;
+      font-size: 14px;
+      outline: none;
+      text-align: right;
+    }
+
+    .box input::placeholder {
+      color: #aaa;
+    }
+
+    .box button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
       border: none;
-      border-radius: 8px;
+      border-radius: 30px;
+      background: #00e5ff;
+      color: black;
+      font-weight: bold;
       font-size: 16px;
       cursor: pointer;
+      transition: 0.3s;
     }
 
-    button:hover {
-      background-color: #0056b3;
+    .box button:hover {
+      background: #00bcd4;
     }
 
-    .error {
-      color: red;
-      text-align: center;
-      margin-top: 10px;
+    .box .links {
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
     }
 
-    .video-container {
-      margin-top: 20px;
-      border-radius: 10px;
-      overflow: hidden;
+    .box .links a {
+      color: #ff0055;
+      text-decoration: none;
+      transition: 0.3s;
     }
 
-    .video-container video {
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
-      display: block;
+    .box .links a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <div class="login">
-    <h2>تسجيل الدخول</h2>
-    <form onsubmit="login(); return false;">
-      <input type="text" id="username" placeholder="اسم المستخدم" />
-      <input type="password" id="password" placeholder="كلمة المرور" />
-      <button type="submit">مدخل</button>
-      <div class="error" id="errorMsg"></div>
-    </form>
 
-    <div class="video-container">
-      <video id="loginVideo" loop playsinline muted autoplay>
-        <source src="videoo.mp4" type="video/mp4">
-        Tarayıcınız video etiketini desteklemiyor.
-      </video>
+  <div class="box">
+    <h2>🔊 تسجيل الدخول ❤️</h2>
+    <input type="text" placeholder="اسم المستخدم" id="username">
+    <input type="password" placeholder="كلمة المرور" id="password">
+    <button onclick="login()">دخول</button>
+    <div class="links">
+      <a href="#">نسيت كلمة المرور؟</a>
+      <a href="#">إنشاء حساب</a>
     </div>
   </div>
 
   <script>
     function login() {
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      const errorMsg = document.getElementById('errorMsg');
+      const u = document.getElementById('username').value;
+      const p = document.getElementById('password').value;
 
-      if (username === 'arduino' && password === '31') {
-        window.location.href = 'esad.html';
+      if (u === 'arduino' && p === '31') {
+        alert("تم تسجيل الدخول بنجاح");
+        window.location.href = "esad.html";
       } else {
-        errorMsg.textContent = "اسم المستخدم وكلمة المرور غير صحيحين!";
+        alert("اسم المستخدم أو كلمة المرور غير صحيحة");
       }
     }
-
-    // Video sesi açmak için kullanıcı etkileşimini bekle
-    window.addEventListener("DOMContentLoaded", () => {
-      const video = document.getElementById("loginVideo");
-      video.muted = true;
-      video.volume = 1;
-
-      const playPromise = video.play();
-
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          document.body.addEventListener("click", () => {
-            video.muted = false;
-            video.volume = 1;
-            video.play();
-          }, { once: true });
-        });
-      }
-    });
   </script>
 </body>
 </html>

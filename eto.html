@@ -8,12 +8,12 @@
   <style>
     body {
       margin: 0;
-      padding: 0;
+      padding: 20px 10px;
       background: linear-gradient(to right, #ffecd2, #fcb69f);
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       font-family: 'Segoe UI', sans-serif;
       flex-direction: column;
     }
@@ -26,6 +26,7 @@
       cursor: pointer;
       border-radius: 10px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      flex-shrink: 0;
     }
 
     .gift-box::before,
@@ -64,6 +65,7 @@
 
     .gift-container {
       position: relative;
+      margin-bottom: 20px;
     }
 
     .message {
@@ -71,12 +73,15 @@
       flex-direction: column;
       align-items: center;
       animation: fadeIn 1s forwards;
+      width: 100%;
+      max-width: 360px;
     }
 
     .message h1 {
       color: #6a1b9a;
       font-size: 22px;
       margin-top: 20px;
+      text-align: center;
     }
 
     @keyframes fadeIn {
@@ -85,17 +90,43 @@
     }
 
     .carousel {
-      width: 300px;
+      width: 100%;
+      max-width: 360px;
     }
 
     .carousel-item img {
       width: 100%;
       border-radius: 10px;
+      height: auto;
+      object-fit: cover;
     }
 
     audio {
       margin-top: 20px;
+      width: 100%;
+      max-width: 360px;
     }
+
+    /* Mobil uyumlu */
+    @media (max-width: 400px) {
+      .gift-box {
+        width: 120px;
+        height: 120px;
+      }
+      .gift-lid {
+        width: 140px;
+        height: 35px;
+        top: -35px;
+        left: -10px;
+      }
+      .message h1 {
+        font-size: 18px;
+      }
+      .carousel {
+        max-width: 100%;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -131,11 +162,13 @@
       </div>
 
       <!-- Navigasyon -->
-      <button class="carousel-control-prev" type="button" data-bs-target="#birthdayCarousel" data-bs-slide="prev">
+      <button class="carousel-control-prev" type="button" data-bs-target="#birthdayCarousel" data-bs-slide="prev" style="width:40px; height:40px;">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Önceki</span>
       </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#birthdayCarousel" data-bs-slide="next">
+      <button class="carousel-control-next" type="button" data-bs-target="#birthdayCarousel" data-bs-slide="next" style="width:40px; height:40px;">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Sonraki</span>
       </button>
     </div>
 
